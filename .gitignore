@@ -1,0 +1,13 @@
+build/
+cmake-build-debug/
+
+# 忽略IDE
+.vscode/
+.idea/
+
+# 忽略日志
+*.log
+
+# 忽略可执行文件
+*.exe
+*.out
