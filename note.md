@@ -4,7 +4,7 @@
 - 安装mingw64：https://release-assets.githubusercontent.com/github-production-release-asset/446033510/566997f7-4660-4076-946a-55a3a8797bc9?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-04-27T03%3A37%3A26Z&rscd=attachment%3B+filename%3Dx86_64-14.2.0-release-posix-seh-msvcrt-rt_v12-rev0.7z&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-04-27T02%3A36%3A56Z&ske=2026-04-27T03%3A37%3A26Z&sks=b&skv=2018-11-09&sig=QmPbsRsi3BIxZg9fZQig0%2F7uvbIIgLTstabLuaPtUIA%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc3NzI2MDczOCwibmJmIjoxNzc3MjU4OTM4LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.Pmc7bwKIQUN905vyvzbhCwlL_Y7-caVUa6L0odxjnAE&response-content-disposition=attachment%3B%20filename%3Dx86_64-14.2.0-release-posix-seh-msvcrt-rt_v12-rev0.7z&response-content-type=application%2Foctet-stream
 - 安装cmake：https://release-assets.githubusercontent.com/github-production-release-asset/537699/b49f269b-3ba0-4089-b08f-7e71b2e5f0f2?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-04-27T04%3A08%3A14Z&rscd=attachment%3B+filename%3Dcmake-4.3.2-windows-x86_64.msi&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-04-27T03%3A08%3A14Z&ske=2026-04-27T04%3A08%3A14Z&sks=b&skv=2018-11-09&sig=EZuAbcRoeCw2IrTIlIOGGiGIaIz%2FxYwMXEJTtjPPXYc%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc3NzI2MTYyMSwibmJmIjoxNzc3MjU5ODIxLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.KSyAdrFLDYaswO7os56YGvjsFYNthQHQODNxToiOuQE&response-content-disposition=attachment%3B%20filename%3Dcmake-4.3.2-windows-x86_64.msi&response-content-type=application%2Foctet-stream
 - 添加mingw64和cmake到环境变量
-- cmake编译命令：cmake -G "MinGW Makefiles" .. && cmake --build ..
+- cmake编译命令：cmake -G "MinGW Makefiles" .. && cmake --build .
 
 ## 时间
 - 2026年4月26日
@@ -44,3 +44,26 @@
 
 ### 操作问题
 - 在windows上安装cmake后，如果编译过程中运行cmake命令，windows也会默认去找msvc，而不会寻找安装的cmake。解决办法是指定生成器例如cmake -G "MinGW Makefiles" ..
+
+## 时间
+- 2026年5月1日
+
+## 学习内容
+### C++ 类的生命周期
+#### 析构逻辑
+- 栈对象的析构：当栈对象离开其作用域时，会自动调用其析构函数。栈对象析构的顺序与创建顺序相反。自动析构
+- 堆对象的析构：当堆对象被显式删除（使用 delete 运算符）时，会调用其析构函数。手动析构
+- 静态对象的析构：在程序结束时，会自动调用所有静态对象的析构函数。静态局部对象也是在程序结束时析构。创建是在调用处创建。
+- 创建子类的时候会先创建父类，然后创建子类。析构顺序与创建顺序相反。
+### 栈对象和堆对象
+- 栈对象：分配在栈上的对象，生命周期由作用域控制，自动管理内存，访问速度快，但大小受限。
+- 堆对象：分配在堆上的对象，生命周期由程序员控制，手动管理内存，访问速度慢，但大小无限制。
+- 栈对象适合小型、短生命周期的数据结构，堆对象适合大型、长生命周期的数据结构。以下场景建议使用堆对象：
+  - 对象太大，栈空间不足
+  - 对象生命周期长，超出作用域后需要继续使用
+  - 多处共享对象
+  - 多态
+#### 类创建
+- 堆对象如果通过引用传入函数，函数内可以修改堆对象的内容，函数结束后堆对象不会被销毁。不能通过指针传入函数进行创建，因为指针传入函数后，函数内只能修改指针的内容，不能修改指针指向的对象。
+
+#### 修改指针和引用的内容
