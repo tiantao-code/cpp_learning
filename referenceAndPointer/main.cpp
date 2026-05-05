@@ -19,8 +19,14 @@ void test()
     std::cout << "Value of a after modifying through reference: " << a << std::endl; // Output: 30
 }
 
+void testNullptr()
+{
+    int* p = nullptr; // p is a pointer initialized to nullptr
+    *p = 10; // This will cause a runtime error (dereferencing a null pointer)
+}
+
 int main() 
 {
-    test();
+    testNullptr();
     return 0;
 }
